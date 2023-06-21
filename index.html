@@ -1,74 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Asistencias</title>
+	<title>ALGORITMO_ASISTENCIAS</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+		
+		.container {
+			margin: 20px;
+		}
+		
+		.input-label {
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+		
+		.input-field {
+			margin-bottom: 10px;
+		}
+		
+		.result-label {
+			font-weight: bold;
+			margin-top: 10px;
+		}
+		
+		.result-field {
+			border: 1px solid #ccc;
+			padding: 5px;
+			width: 300px;
+			height: 150px;
+			overflow: auto;
+		}
+		
+		.button {
+			padding: 10px 20px;
+			background-color: #4CAF50;
+			border: none;
+			color: #fff;
+			cursor: pointer;
+			font-size: 14px;
+			border-radius: 4px;
+		}
+	</style>
 </head>
 <body>
-<h1>Asistencias</h1>
-<form action="javascript:void(0);" onsubmit="return calculate();">
-<label for="dh">Días hábiles:</label>
-<input type="number" id="dh" name="dh" />
-<br />
-<label for="tv">Alumnos varones:</label>
-<input type="number" id="tv" name="tv" />
-<br />
-<label for="atv">Asistencias varones:</label>
-<input type="number" id="atv" name="atv" />
-<br />
-<label for="tm">Alumnos mujeres:</label>
-<input type="number" id="tm" name="tm" />
-<br />
-<label for="atm">Asistencias mujeres:</label>
-<input type="number" id="atm" name="atm" />
-<br />
-<input type="submit" value="Calcular" />
-</form>
-<br />
-<div id="results"></div>
-<script>
-function calculate() {
-var dh = document.getElementById("dh").value;
-var tv = document.getElementById("tv").value;
-var atv = document.getElementById("atv").value;
-var tm = document.getElementById("tm").value;
-var atm = document.getElementById("atm").value;
-var aiv = tv * dh;
-var aim = tm * dh;
-var intv = aiv - atv;
-var aig = aiv + aim;
-var iig = aig;
-var intm = aim - atm;
-var amv = atv / dh;
-var amm = atm / dh;
-var patv = atv * 100 / aiv;
-var patm = atm * 100 / aim;
-var ata = atv + atm;
-var pata = ata * 100 / aig;
-var intt = intv + intm;
-var amta = ata / dh;
-var pita = intt * 100 / iig;
-var pitv = intv * 100 / aiv;
-var pintm = intm * 100 / aim;
-var results = `
-<ul>
-<li>Asistencias totales de los varones: ${atv}</li>
-<li>Asistencias totales de las mujeres: ${atm}</li>
-<li>Asistencias totales de los alumnos/as: ${ata}</li>
-<li>Inasistencias totales de los varones: ${intv}</li>
-<li>Inasistencias totales de las mujeres: ${intm}</li>
-<li>Inasistencias totales de los alumnos/as: ${intt}</li>
-<li>Asistencia media de los varones: ${amv}</li>
-<li>Asistencia media de las mujeres: ${amm}</li>
-<li>Asistencia media total de los alumnos/as: ${amta}</li>
-<li>Porcentaje de asistencia de los varones: ${patv} %</li>
-<li>Porcentaje de asistencia de las mujeres: ${patm} %</li>
-<li>Porcentaje de asistencia total de los alumnos/as: ${pata} %</li>
-<li>Porcentaje de inasistencias de los varones: ${pitv} %</li>
-<li>Porcentaje de inasistencias de las mujeres: ${pintm} %</li>
-<li>Porcentaje de inasistencias total de los alumnos/as: ${pita} %</li>
-</ul>`;
-document.getElementById("results").innerHTML = results;
-}
-</script>
+	<div class="container">
+		<div class="input-label">Por favor, ingrese la cantidad de días hábiles:</div>
+		<input id="days" type="number" class="input-field"><br>
+		
+		<div class="input-label">Ingrese la cantidad de alumnos varones:</div>
+		<input id="maleStudents" type="number" class="input-field"><br>
+		
+		<div class="input-label">Ingrese las asistencias totales de los varones:</div>
+		<input id="maleAttendance" type="number" class="input-field"><br>
+		
+		<div class="input-label">Ingrese la cantidad de alumnas mujeres:</div>
+		<input id="femaleStudents" type="number" class="input-field"><br>
+		
+		<div class="input-label">Ingrese las asistencias totales de las mujeres:</div>
+		<input id="femaleAttendance" type="number" class="input-field"><br>
+		
+		<button onclick="calculate()" class="button">Calcular</button>
+		
+		<div class="result-label">Resultados:</div>
+		<textarea id="results" class="result-field" readonly></textarea>
+	</div>
+
+	<script>
+		function calculate() {
+			var dh = parseFloat(document.getElementById("days").value);
+			var tv = parseFloat(document.getElementById("maleStudents").value);
+			var atv = parseFloat(document.getElementById("maleAttendance").value);
+			var tm = parseFloat(document.getElementById("femaleStudents").value);
+			var atm = parseFloat(document.getElementById("femaleAttendance").value);
+
+			var aiv = tv * dh; // asistencia ideal varones
+			var aim = tm * dh; // asistencia ideal mujeres
+			var intv = aiv - atv; // inasistencia total varones
+			var aig = aiv + aim; // asistencia ideal general
+			var iig = aiv + aim; // inasistencia ideal general
+			var intm = aim - atm; // inasistencia total mujeres
+			var amv = atv / dh; // asistencia media varones
+			var amm = atm / dh; // asistencia media mujeres
+			var patv = (atv * 100) / aiv; // porcentaje de asistencia total varones
+			var patm = (atm * 100) / aim; // porcentaje de asistencia total mujeres
+			var ata = atv + atm; // asistencia total alumnos
+			var pata = (ata * 100) / aig; // porcentaje de asistencia total alumnos
+			var intt = intv + intm; // inasistencia total total
+			var amta = ata / dh; // asistencia media total alumnos
+			var pita = (intt * 100) / iig; // porcentaje inasistencia total alumnos
+			var pitv = (intv * 100) / aiv; // porcentaje inasistencia total varones
+			var pintm = (intm * 100) / aim; // porcentaje inasistencia total mujeres
+
+			var resultText = '';
+			resultText += '1- Asistencias totales de los varones: ' + atv + '\n';
+			resultText += '2- Asistencias totales de las mujeres: ' + atm + '\n';
+			resultText += '3- Asistencias totales de los alumnos/as: ' + ata + '\n';
+			resultText += '4- Inasistencias totales de los varones: ' + intv + '\n';
+			resultText += '5- Inasistencias totales de las mujeres: ' + intm + '\n';
+			resultText += '6- Inasistencias totales de los alumnos/as: ' + intt + '\n';
+			resultText += '7- Asistencia media de los varones: ' + amv + '\n';
+			resultText += '8- Asistencia media de las mujeres: ' + amm + '\n';
+			resultText += '9- Asistencia media total de los alumnos/as: ' + amta + '\n';
+			resultText += '10- Porcentaje de asistencia de los varones: ' + patv + '%\n';
+			resultText += '11- Porcentaje de asistencia de las mujeres: ' + patm + '%\n';
+			resultText += '12- Porcentaje de asistencia total de los alumnos/as: ' + pata + '%\n';
+			resultText += '13- Porcentaje de inasistencias de los varones: ' + pitv + '%\n';
+			resultText += '14- Porcentaje de inasistencias de las mujeres: ' + pintm + '%\n';
+			resultText += '15- Porcentaje de inasistencias total de los alumnos/as: ' + pita + '%\n';
+
+			document.getElementById("results").value = resultText;
+		}
+	</script>
 </body>
 </html>
